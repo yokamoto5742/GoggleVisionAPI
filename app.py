@@ -1,18 +1,19 @@
 import streamlit as st
 from google.cloud import vision
 from google.oauth2 import service_account
+import os
 
-CREDENTIALS_FILE = 'credentials.json'
 MAX_FILE_SIZE = 204800 * 1024  # 200MB in kilobytes
 SUPPORTED_TYPES = ["png", "jpg"]
+print(os.environ['GOOGLE_APPLICATION_CREDENTIALS'])
 
 
 def transcribe_image(file):
-    """ OCR (Optical Character Recognition) for an image file """
+
     if file is None:
         return None
 
-    credentials = service_account.Credentials.from_service_account_file(CREDENTIALS_FILE)
+    credentials = service_account.Credentials.from_service_account_file(os.environ['GOOGLE_APPLICATION_CREDENTIALS'])
     client = vision.ImageAnnotatorClient(credentials=credentials)
 
     # File loading
