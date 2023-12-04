@@ -2,18 +2,19 @@ import streamlit as st
 from google.cloud import vision
 from google.oauth2 import service_account
 import os
+import json
 
 MAX_FILE_SIZE = 204800 * 1024  # 200MB in kilobytes
 SUPPORTED_TYPES = ["png", "jpg"]
-print(os.environ['GOOGLE_APPLICATION_CREDENTIALS'])
 
 
 def transcribe_image(file):
-
     if file is None:
         return None
 
-    credentials = service_account.Credentials.from_service_account_file(os.environ['GOOGLE_APPLICATION_CREDENTIALS'])
+    # Heroku環境での認証情報の読み込み
+    credentials_json = json.loads(os.environ['GOOGLE_APPLICATION_CREDENTIALS'])
+    credentials = service_account.Credentials.from_service_account_info(credentials_json)
     client = vision.ImageAnnotatorClient(credentials=credentials)
 
     # File loading
