@@ -12,9 +12,9 @@ def transcribe_image(file):
     if file is None:
         return None
 
-    # Heroku環境での認証情報の読み込み
-    credentials_json = json.loads(os.environ['GOOGLE_APPLICATION_CREDENTIALS'])
-    credentials = service_account.Credentials.from_service_account_info(credentials_json)
+    # ローカル環境の場合
+    credentials = service_account.Credentials.from_service_account_file(os.environ['GOOGLE_APPLICATION_CREDENTIALS'])
+
     client = vision.ImageAnnotatorClient(credentials=credentials)
 
     # File loading
